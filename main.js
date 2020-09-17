@@ -3,31 +3,31 @@ $(function() {
     const distantFullListUrl = 'https://www.amiiboapi.com/api/amiibo';
     const localFullListUrl = 'http://127.0.0.1:8080/assets/amiibo-local/amiibo-array.json';
     
-    main();
+    main(distantFullListUrl);
 
     /**
      * Gets all the amiibos' data, adds list items to the navigation, allows to expand/reduce list panels and add images in the main section, on click.
-     * @param url (Local or distant URLs can be passed)
+     * @param urlAPI (Local or distant URLs can be passed)
      */
-    function main(url = distantFullListUrl) {
+    function main(urlAPI) {
+        // Build the navigation list
+        addListItems('types', 'type');
+        addListItems('series', 'amiiboseries');
+        addListItems('characters', 'character');
+
+        // Bind a click event on all list titles (<h2>)
+        $('h2').click(function() {
+            // If the clicked <h2> doesn't have a "data-active" attribute
+            if (!$(this).attr('data-active')) {
+                // Add a "data-active" attribute to it, then show its list items
+                $(this).attr('data-active', true).next().slideDown();
+                // Remove the "data-active" attribute from every other <h2>, then hide all list items except for the clicked <h2>
+                $('h2').not(this).removeAttr('data-active').next().slideUp();
+            }
+        });
+
         // Call the API to get all the amiibos (first with the distant URL, then with the local one if the request fails)
-        $.get(url, function(amiiboFullArray) {
-            // Build the navigation list
-            addListItems('types', 'type');
-            addListItems('series', 'amiiboseries');
-            addListItems('characters', 'character');
-
-            // Bind a click event on all list titles (<h2>)
-            $('h2').click(function() {
-                // If the clicked <h2> doesn't have a "data-active" attribute
-                if (!$(this).attr('data-active')) {
-                    // Add a "data-active" attribute to it, then show its list items
-                    $(this).attr('data-active', true).next().slideDown();
-                    // Remove the "data-active" attribute from every other <h2>, then hide all list items except for the clicked <h2>
-                    $('h2').not(this).removeAttr('data-active').next().slideUp();
-                }
-            });
-
+        $.get(urlAPI, function(amiiboFullArray) {
             // Bind a click event on all list items (<li>)
             $('nav').on('click', 'li', function() {
                 // Remove everything from the main section
