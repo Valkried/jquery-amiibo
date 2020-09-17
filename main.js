@@ -35,7 +35,7 @@ $(function() {
 
                 // Create a filtered array from the full list of amiibos
                 const filteredAmiibo = amiiboFullArray.amiibo.filter(
-                    // Check the "data-filter" attribute of the nav-section element in order to find the correct key
+                    // Check the "data-filter" attribute of the list element in order to find the correct key
                     // For example, if we want to get a Figure amiibo from the Type list :
                     // We click on the <li>Figure</li> (so "$(this).text()" is "Figure")
                     // The "data-filter" attribute of the Type list is "type", because in the data received from the API, amiibo.type returns the type (like "Figure")
@@ -56,7 +56,7 @@ $(function() {
 
     /**
      * Calls the API to get all list items, and appends the data to a list located into the target container.
-     * @param target (Must be the #id of a nav-section in the HTML. The target element must have a <ul> direct child)
+     * @param target (Must be the #id of a <ul> in the HTML)
      * @param url (The URL associated to the target : you can get it from the API's documentation)
      */
     function addListItems(target, url) {
