@@ -40,7 +40,7 @@ $(function() {
                     // We click on the <li>Figure</li> (so "$(this).text()" is "Figure")
                     // The "data-filter" attribute of the Type list is "type", because in the data received from the API, amiibo.type returns the type (like "Figure")
                     // So, we can compare the clicked type (e.g "Figure") to the amiibos' type, and add it to the filtered array
-                    amiibo => amiibo[$(this).parent().parent().attr('data-filter')] === $(this).text()
+                    amiibo => amiibo[$(this).parent().attr('data-filter')] === $(this).text()
                 );
         
                 filteredAmiibo.forEach(amiibo => {
@@ -64,7 +64,7 @@ $(function() {
         $.get('https://www.amiiboapi.com/api/' + url, function(response) {
             response.amiibo.forEach(element => {
                 // For each data, add a <li> to a <ul> into the target container
-                $(`#${target} ul`).append(`<li>${element.name}</li>`);
+                $(`#${target}`).append(`<li>${element.name}</li>`);
             });
         });
     }
