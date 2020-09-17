@@ -1,0 +1,52 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 10px;
+}
+
+nav {
+    padding: 10px;
+    width: 25%;
+    background-color: #1b5e20;
+    text-align: center;
+    margin-right: 10px;
+    overflow: auto;
+}
+
+main {
+    width: 75%;
+    background-color: #c8e6c9;
+    overflow: auto;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    color: white;
+    cursor: pointer;
+}
+
+img {
+    width: 100px;
+    padding: 10px;
+}
+
+.nav-section {
+    margin-bottom: 20px;
+}

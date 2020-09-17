@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amiibo</title>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav>
+        <div id="types" class="nav-section" data-filter="type">
+            <h2>Types</h2>
+            <ul></ul>
+        </div>
+
+        <div id="series" class="nav-section" data-filter="amiiboSeries">
+            <h2>Séries</h2>
+            <ul></ul>
+        </div>
+
+        <div id="characters" class="nav-section" data-filter="character">
+            <h2>Personnages</h2>
+            <ul></ul>
+        </div>
+    </nav>
+
+    <main></main>
+
+    <script src="assets/amiibo-local/amiibo-array.json"></script>
+    <script src="main.js"></script>
+</body>
+</html>
