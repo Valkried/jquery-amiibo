@@ -1,8 +1,9 @@
 $(function() {
     // 2 URLs are created in order to handle issues from the API
     const distantFullListUrl = 'https://www.amiiboapi.com/api/amiibo';
+    // const distantFullListUrl = 'http://localhost:8888/api/amiibo';
     const localFullListUrl = 'http://127.0.0.1:8080/assets/amiibo-local/amiibo-array.json';
-    
+
     main(distantFullListUrl);
 
     /**
@@ -12,7 +13,7 @@ $(function() {
     function main(urlAPI) {
         // Build the navigation list
         addListItems('types', 'type');
-        addListItems('series', 'amiiboseries');
+        addListItems('amiiboSeries', 'amiiboseries');
         addListItems('characters', 'character');
 
         // Bind a click event on all list titles (<h2>)
@@ -42,7 +43,7 @@ $(function() {
                     // So, we can compare the clicked type (e.g "Figure") to the amiibos' type, and add it to the filtered array
                     amiibo => amiibo[$(this).parent().attr('data-filter')] === $(this).text()
                 );
-        
+
                 filteredAmiibo.forEach(amiibo => {
                     // For each amiibo from the filtered array, add its image to the main section
                     $('main').append(`<img src="${amiibo.image}" alt=${amiibo.character} >`)
