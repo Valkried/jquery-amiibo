@@ -1,19 +1,22 @@
 $(function() {
     // 2 URLs are created in order to handle issues from the API
-    const distantFullListUrl = 'https://www.amiiboapi.com/api/amiibo';
-    // const distantFullListUrl = 'http://localhost:8888/api/amiibo';
-    const localFullListUrl = 'http://127.0.0.1:8080/assets/amiibo-local/amiibo-array.json';
+    const distantServerPath = 'https://www.amiiboapi.com';
 
-    main(distantFullListUrl);
+    main(distantServerPath + '/api/amiibo');
 
     /**
      * Gets all the amiibos' data, adds list items to the navigation, allows to expand/reduce list panels and add images in the main section, on click.
      * @param urlAPI (Local or distant URLs can be passed)
      */
     function main(urlAPI) {
+        // Close all nav item
+        $('h2').removeAttr('data-active').next().slideUp();
+
         // Build the navigation list
         addListItems('types', 'type');
+        $('#types').slideDown(); // Open only "type" in nav on startup
         addListItems('amiiboSeries', 'amiiboseries');
+        addListItems('gameSeries', 'gameseries');
         addListItems('characters', 'character');
 
         // Bind a click event on all list titles (<h2>)
@@ -31,8 +34,10 @@ $(function() {
         $.get(urlAPI, function(amiiboFullArray) {
             // Bind a click event on all list items (<li>)
             $('nav').on('click', 'li', function() {
+                // Remove src attribute  from all images to stop all image loading
+                $("img").removeAttr("src");
                 // Remove everything from the main section
-                $('main').empty();
+                $('.main').empty();
 
                 // Create a filtered array from the full list of amiibos
                 const filteredAmiibo = amiiboFullArray.amiibo.filter(
@@ -44,12 +49,32 @@ $(function() {
                     amiibo => amiibo[$(this).parent().attr('data-filter')] === $(this).text()
                 );
 
-                filteredAmiibo.forEach(amiibo => {
+                $('.title').html($(this).parent().parent().find('h2').text() + " / " + $(this).text());
+
+                filteredAmiibo.forEach((amiibo, index) => {
                     // For each amiibo from the filtered array, add its image to the main section
-                    $('main').append(`<img src="${amiibo.image}" alt=${amiibo.character} >`)
+                    $('.main').append(
+                      `<img
+                        id="img_${$(this).parent().attr("id")}_${index}"
+                        src="${amiibo.image}"
+                        alt=${amiibo.character}
+                        style="display: none"
+                      >`
+                    );
+                    // For each added images, show it only when content is loaded
+                    $(`#img_${$(this).parent().attr("id")}_${index}`).bind("load", function () { $(this).fadeIn(1000);});
+                    // Add effect when mouse enter on image
+                    $(`#img_${$(this).parent().attr("id")}_${index}`).mouseenter(function(){
+	                     $(this).addClass("change");
+                    });
+                    // Remove effect when mouse leave on image
+                    $(`#img_${$(this).parent().attr("id")}_${index}`).mouseleave(function(){
+                        $(this).removeClass("change");
+                    });
                 });
             });
         }).fail(function() {
+            const localFullListUrl = 'http://127.0.0.1:8080/assets/amiibo-local/amiibo-array.json';
             // If the request fails (e.g : API crashes), reload it with the local URL
             main(localFullListUrl);
         });
@@ -62,7 +87,7 @@ $(function() {
      */
     function addListItems(target, url) {
         // Call the API
-        $.get('https://www.amiiboapi.com/api/' + url, function(response) {
+        $.get(distantServerPath + '/api/' + url, function(response) {
             response.amiibo.forEach(element => {
                 // For each data, add a <li> to a <ul> into the target container
                 $(`#${target}`).append(`<li>${element.name}</li>`);
